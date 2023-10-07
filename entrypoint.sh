@@ -2,7 +2,7 @@
 
 set -e
 
-required_variables=("AWS_REGION" "SQS_NAME")
+required_variables=("AWS_REGION" "QUEUE_NAME")
 
 for var in "${required_variables[@]}"; do
   if [ -z "${!var}" ]; then
@@ -11,6 +11,6 @@ for var in "${required_variables[@]}"; do
   fi
 done
 
-sed -i "s/<AWS_REGION>/$AWS_REGION/g" /etc/nginx/conf.d/sqs-proxy.conf
+sed -i "s/<AWS_REGION>/$AWS_REGION/g" /etc/nginx/conf.d/default.conf
 
 exec /usr/bin/openresty -g 'daemon off;'
