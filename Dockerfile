@@ -6,7 +6,12 @@ RUN apt update && \
     luarocks install lua-resty-http && \
     luarocks install penlight && \
     rm -rf /var/lib/apt/lists/*
+COPY conf/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
+COPY conf/sqs-proxy.conf /etc/nginx/conf.d/sqs-proxy.conf
+COPY lua/ /etc/lua
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-COPY nginx/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
-COPY nginx/sqs-proxy.conf /etc/nginx/conf.d/sqs-proxy.conf
-COPY nginx/lua/ /etc/lua
+ENTRYPOINT ["/entrypoint.sh"]
+
+STOPSIGNAL SIGQUIT
